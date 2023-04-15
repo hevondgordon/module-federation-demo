@@ -1,0 +1,66 @@
+body {
+  margin: 0;
+  /* background: white;
+  background: #a54040; */
+}
+.button {
+  background: #16776b;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  margin: 10px;
+}
+
+section {
+  display: flex;
+  flex-direction: row;
+}
+
+.parent {
+  background: #16776b;
+  position: relative;
+  /* width: 100%; or any desired width */
+  width:100px;
+  height: 0;
+  padding-bottom: 100%; /* or any desired aspect ratio (e.g. 1:1 = 100%) */
+}
+
+.child {
+  
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.column {
+  padding: 10px;
+  margin: 10px;
+  background: aqua;
+}
+
+#column-1 {
+  background: #9a2f71;
+  flex: 200px;
+  flex-wrap: wrap;
+
+}
+
+#column-2 {
+  background: #a54040;
+  flex: 200px;
+  flex-wrap: wrap;
+
+}
+
+#column-3 {
+  background: #16776b;
+  flex: 200px;
+  flex-wrap: wrap;
+
+}
+
