@@ -3,6 +3,8 @@ import React, { useState, useEffect, FC } from 'react';
 // This is the props that will be passed to the RemoteModuleFetch component
 interface RemoteModuleFetchProps<T> {
     remoteModuleLocation: string;
+    componentName: string;
+    appScope: string;
     remoteModuleProps?: RemoteModuleProps<T>
 }
 
@@ -13,49 +15,68 @@ interface RemoteModuleProps<T> {
 
 interface IWindow extends Window {
     [key: string]: any;
-  }
+}
+
+interface Container {
+    init(shareScope: string): Promise<void>;
+}
 
 declare const __webpack_init_sharing__: (shareScope: string) => Promise<void>;
 declare const __webpack_share_scopes__: { default: string };
 
 function loadComponent<T>(scope: string, module: string): () => Promise<T> {
-  return async () => {
-    // Initializes the share scope. This fills it with known provided modules from this build and all remotes
-    await __webpack_init_sharing__('default');
-    const _window = window as IWindow;
-    const container = _window[scope]; // or get the container somewhere else
-    // Initialize the container, it may provide shared modules
-    await container.init(__webpack_share_scopes__.default);
-    const factory = await _window[scope].get(module);
-    const Module = factory() as T;
-    return Module;
-  };
-}
+    return async () => {
+        await __webpack_init_sharing__('default');
+        const _window = window as IWindow;
+        const container = _window[scope] as Container;
 
-const useDynamicScript = (url: string) => {
-      const element = document.createElement("script");
-      element.src = url;
-      element.type = "text/javascript";
-      element.async = true;
-      document.head.appendChild(element);
-  };
+        await container.init(__webpack_share_scopes__.default);
+        const factory = await _window[scope].get(module);
+        const Module = factory() as T;
+        return Module;
+    };
+}
 
 // This is a generic component that will fetch a remote module and render it
 const RemoteModuleFetch = function <T>(props: RemoteModuleFetchProps<T>) {
     const [RemoteModule, setRemoteModule] = useState<FC<RemoteModuleProps<T>> | null>(null);
-    const { remoteModuleProps, remoteModuleLocation } = props;
-    
+    const { remoteModuleProps, remoteModuleLocation, appScope, componentName } = props;
+    const [isScriptReady, setIsScriptReady] = useState(false);
+
+    const setScript = (remoteModuleLocationParam: string) => {
+        const element = document.createElement("script");
+
+        element.src = remoteModuleLocationParam;
+        element.type = "text/javascript";
+        element.async = true;
+
+        element.onload = () => {
+            console.log('loaded')
+            setIsScriptReady(true);
+        };
+
+        element.onerror = () => {
+            console.log('error loading')
+            setIsScriptReady(false);
+            //   setErrorLoading(true);
+        };
+
+        document.head.appendChild(element);
+    }
+
     useEffect(() => {
-        useDynamicScript(remoteModuleLocation);
-        const fetchRemoteModule = async () => {
-            const remoteModule = React.lazy(loadComponent('app2', './Widget')) as FC<RemoteModuleProps<T>>;
-            setRemoteModule(remoteModule);
+        const fetchRemoteModule = () => {
+            setScript(remoteModuleLocation);
+            if (isScriptReady) {
+                const remoteModule = React.lazy(loadComponent(appScope, componentName)) as FC<RemoteModuleProps<T>>;
+                setRemoteModule(remoteModule);
+            }
         };
         fetchRemoteModule();
-    }, [props.remoteModuleLocation]);
+    }, [isScriptReady, remoteModuleLocation]);
 
     if (RemoteModule === null) {
-        return null;
+        return <div>oh shoot it didn't load</div>;
     }
     return (<RemoteModule {...remoteModuleProps} />);
 }
