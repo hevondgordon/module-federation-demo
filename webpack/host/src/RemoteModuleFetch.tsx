@@ -44,6 +44,7 @@ const RemoteModuleFetch = function <T>(props: RemoteModuleFetchProps<T>) {
     const [isScriptReady, setIsScriptReady] = useState(false);
 
     const setScript = (remoteModuleLocationParam: string) => {
+        console.log('setting script', remoteModuleLocationParam)
         const element = document.createElement("script");
 
         element.src = remoteModuleLocationParam;
