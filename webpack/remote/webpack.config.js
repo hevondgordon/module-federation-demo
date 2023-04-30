@@ -3,7 +3,7 @@ const { ModuleFederationPlugin } = require("webpack").container;
 const path = require("path");
 const deps = require("./package.json").dependencies;
 module.exports = {
-  entry: "./src/index",
+  entry: "./src/index.ts",
   mode: "development",
   target: "web",
   devServer: {
@@ -25,10 +25,20 @@ module.exports = {
           presets: ["@babel/preset-react"],
         },
       },
+      // `ts` and `tsx` files are parsed using `ts-loader`
+      {
+        test: /\.(ts|tsx)$/,
+        loader: "ts-loader",
+        exclude: /node_modules/,
+      },
+      {
+        test: /\.css$/i,
+        use: ["style-loader", "css-loader"],
+      },
     ],
   },
   resolve: {
-    extensions: ["", ".js", ".jsx"],
+    extensions: ["*", ".js", ".jsx", ".ts", ".tsx"],
   },
   plugins: [
     new ModuleFederationPlugin({
@@ -36,6 +46,9 @@ module.exports = {
       filename: "remoteEntry.js",
       exposes: {
         "./Widget": "./src/Widget",
+        "./Sidebar": "./src/Sidebar",
+        "./Footer": "./src/Footer",
+        "./Header": "./src/Header",
       },
       shared: {
         "react@^16.13.0": {

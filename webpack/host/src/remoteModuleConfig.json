@@ -1,0 +1,8 @@
+{
+    "defaultUrl": "ttp://localhost:3002/remoteEntry.js",
+    
+    "footer": {
+        "remoteModuleOverrideUrl": "",
+        "componentName": "Footer"
+    }
+}

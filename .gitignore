@@ -1,4 +1,7 @@
 node_modules/*
 webpack/**/node_modules
 webpack/*/node_modules
+webpack/**/dist
+*.d.ts
+dist/*
 

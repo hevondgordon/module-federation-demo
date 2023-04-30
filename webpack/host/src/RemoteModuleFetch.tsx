@@ -58,7 +58,6 @@ const RemoteModuleFetch = function <T>(props: RemoteModuleFetchProps<T>) {
         element.onerror = () => {
             console.log('error loading')
             setIsScriptReady(false);
-            //   setErrorLoading(true);
         };
 
         document.head.appendChild(element);
