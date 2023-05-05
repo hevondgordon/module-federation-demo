@@ -38,7 +38,7 @@ function loadComponent<T>(scope: string, module: string): () => Promise<T> {
 }
 
 // This is a generic component that will fetch a remote module and render it
-const RemoteModuleFetch = function <T>(props: RemoteModuleFetchProps<T>) {
+export const RemoteModuleFetch = function <T>(props: RemoteModuleFetchProps<T>) {
     const [RemoteModule, setRemoteModule] = useState<FC<RemoteModuleProps<T>> | null>(null);
     const { remoteModuleProps, remoteModuleLocation, appScope, componentName } = props;
     const [isScriptReady, setIsScriptReady] = useState(false);
@@ -81,6 +81,3 @@ const RemoteModuleFetch = function <T>(props: RemoteModuleFetchProps<T>) {
     return (<RemoteModule {...remoteModuleProps} />);
 }
 
-
-
-export default RemoteModuleFetch;
