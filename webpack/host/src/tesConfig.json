@@ -5,18 +5,6 @@
         "defaultUrl": "http://localhost:3002/remoteEntry.js",
         "modules": [
             {
-                "name": "Sidebar",
-                "import": "./Sidebar"
-            },
-            {
-                "name": "Header",
-                "import": "./Header"
-            },
-            {
-                "name": "Footer",
-                "import": "./Footer"
-            },
-            {
                 "name": "Module 1",
                 "import": "./Module"
             },
