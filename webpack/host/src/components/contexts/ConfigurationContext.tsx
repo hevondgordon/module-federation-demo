@@ -1,7 +1,7 @@
 import { createContext, useState } from 'react';
 import { RemoteModuleConfig } from '../../interfaces';
 
-const remoteModuleConfig = require('../../remoteModuleConfig.json');
+const remoteModuleConfig = require('../../configuration/remoteModuleConfig.json');
 
 export const ConfigurationContext = createContext({
     configuration: remoteModuleConfig,
@@ -10,7 +10,6 @@ export const ConfigurationContext = createContext({
 
 export const ConfigurationContextProvider = (props: { children: JSX.Element[] | JSX.Element }) => {
     const setConfiguration = <U,>(configuration: RemoteModuleConfig<U>) => {
-        console.log('did this happen?', JSON.stringify(configuration))
         setConfigurationState({ setConfiguration, configuration });
     }
 

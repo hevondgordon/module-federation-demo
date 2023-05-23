@@ -49,6 +49,7 @@ module.exports = {
         "./Sidebar": "./src/Sidebar",
         "./Footer": "./src/Footer",
         "./Header": "./src/Header",
+        "./AlternateFooter": "./src/AlternateFooter",
       },
       shared: {
         "react@^16.13.0": {

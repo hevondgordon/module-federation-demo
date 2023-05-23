@@ -14,7 +14,7 @@ const Builder = <T,>() => {
 
     const [dragAndDropModules, setDragAndDropModules] = useState<Array<{ name: string, import: string }>>([]);
     const DragAndDropModules = dragAndDropModules.map((module, index) => {
-        return <div key={index} onDragStart={onDragStart} draggable='true' className='drag-component'>{module.name}</div>
+        return <div key={`key-${index * 2}`} onDragStart={onDragStart} draggable='true' className='drag-component'>{module.name}</div>
     })
 
     useEffect(() => {

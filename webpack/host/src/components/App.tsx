@@ -1,11 +1,17 @@
-import { Suspense } from 'react';
+import { Suspense, useContext, useState, useEffect } from 'react';
 import { DragAndDrop } from './DragAndDrop'
-import { ConfigurationContext, ConfigurationContextProvider } from './contexts/ConfigurationContext'
+import { ConfigurationContext } from './contexts/ConfigurationContext'
 import '../styles/App.css';
 
-const configuration = require('../remoteModuleConfig.json')
-
 function App() {
+  const configContext = useContext(ConfigurationContext);
+  const mapping = configContext.configuration.mapping;
+
+  const [{ header, sidebar, footer }, setMapping] = useState(mapping);
+
+  useEffect(() => {
+    setMapping(mapping);
+  }, [mapping])
 
   return (
     <div className='app-container'
@@ -15,15 +21,15 @@ function App() {
       }}
     >
 
-      <Suspense fallback="Loading System">
+      <Suspense fallback="Loading Header">
         <DragAndDrop
-          childComponentSlot='header'
+          childComponentSlot={header}
           className='header-container' />
       </Suspense>
       <div className='main-content'>
-        <Suspense fallback="Loading System">
+        <Suspense fallback="Loading Sidebar">
           <DragAndDrop
-            childComponentSlot='sidebar'
+            childComponentSlot={sidebar}
             className='sidebar-container' />
         </Suspense>
         <main>
@@ -31,9 +37,9 @@ function App() {
           <p>This is the main content of the page.</p>
         </main>
       </div>
-      <Suspense fallback="Loading System">
+      <Suspense fallback="Loading Footer">
         <DragAndDrop
-          childComponentSlot='footer'
+          childComponentSlot={footer}
           className='footer-container' />
       </Suspense>
 

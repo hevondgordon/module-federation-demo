@@ -39,7 +39,69 @@
         "header",
         "sidebar"
     ],
-    "remoteModules": [
+    "mapping": {
+        "footer": "footers",
+        "header": "headers",
+        "sidebar": "sidebars"
+    },
+    "remoteModules": {
+        "headers": [
+            {
+                "enabled": true,
+                "name": "header",
+                "scope": "app2",
+                "componentName": "./Header",
+                "props": {
+                    "title": "Header"
+                }
+            }
+        ],
+        "sidebars": [
+            {
+                "enabled": true,
+                "slot": "sidebar",
+                "scope": "app2",
+                "componentName": "./Sidebar",
+                "props": {
+                    "title": "Remote Sidebar",
+                    "details": [
+                        {
+                            "name": "link 1",
+                            "url": "google.com"
+                        }
+                    ]
+                }
+            }
+        ],
+        "footers": [
+            {
+                "slot": "footer",
+                "scope": "app2",
+                "componentName": "./Footer",
+                "props": {
+                    "title": "Footer"
+                }
+            },
+            {
+                "enabled": true,
+                "slot": "alternate-footer",
+                "scope": "app2",
+                "componentName": "./AlternateFooter",
+                "props": {
+                    "title": "AlternateFooter"
+                }
+            }
+        ]
+    },
+    "_remoteModules": [
+        {
+            "slot": "alternate-footer",
+            "scope": "app2",
+            "componentName": "./AlternateFooter",
+            "props": {
+                "title": "AlternateFooter"
+            }
+        },
         {
             "slot": "footer",
             "scope": "app2",

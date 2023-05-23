@@ -1,4 +1,6 @@
-import React, { useState, useEffect, FC } from 'react';
+import React, { useState, useEffect, FC, useContext } from 'react';
+import { ConfigurationContext } from './contexts/ConfigurationContext'
+import { RemoteModuleConfig } from '../interfaces'
 
 // This is the props that will be passed to the RemoteModuleFetch component
 interface RemoteModuleFetchProps<T> {
@@ -6,6 +8,7 @@ interface RemoteModuleFetchProps<T> {
     componentName: string;
     appScope: string;
     remoteModuleProps?: RemoteModuleProps<T>
+    style?: React.CSSProperties
 }
 
 // This is a generic type that will be used to pass props to the remote module
@@ -69,6 +72,7 @@ export const RemoteModuleFetch = function <T>(props: RemoteModuleFetchProps<T>) 
             setScript(remoteModuleLocation);
             if (isScriptReady) {
                 const remoteModule = React.lazy(loadComponent(appScope, componentName)) as FC<RemoteModuleProps<T>>;
+                console.log('remoteModule', remoteModule)
                 setRemoteModule(remoteModule);
             }
         };
