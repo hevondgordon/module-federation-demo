@@ -1,4 +1,4 @@
-import { createContext, useState } from 'react';
+import { createContext, useEffect, useState } from 'react';
 import { RemoteModuleConfig } from '../../interfaces';
 
 const remoteModuleConfig = require('../../configuration/remoteModuleConfig.json');
@@ -9,15 +9,15 @@ export const ConfigurationContext = createContext({
 });
 
 export const ConfigurationContextProvider = (props: { children: JSX.Element[] | JSX.Element }) => {
+    const [state, setConfigurationState] = useState({ configuration: remoteModuleConfig });
+
     const setConfiguration = <U,>(configuration: RemoteModuleConfig<U>) => {
-        setConfigurationState({ setConfiguration, configuration });
+        setConfigurationState({ configuration });
     }
 
-    const [state, setConfigurationState] = useState({ configuration: remoteModuleConfig, setConfiguration: setConfiguration });
 
     return (
-        <ConfigurationContext.Provider value={state}>
-            <div>{JSON.stringify(state)}</div>
+        <ConfigurationContext.Provider value={{ ...state, setConfiguration: setConfiguration }}>
             {props.children}
         </ConfigurationContext.Provider>
     )

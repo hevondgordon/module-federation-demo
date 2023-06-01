@@ -5,14 +5,16 @@ import {
     RemoteModule
 } from '../interfaces'
 import { dragoverHandler, dropHandler } from '../dragAndDrop'
-import { ConfigurationContext } from './contexts/ConfigurationContext'
 import { RemoteModuleFetch } from './RemoteModuleFetch';
+
+import { useConfigurationContext } from '../hooks'
 
 interface RemoteModuleControllerProps<T> {
     modules: RemoteModule<T>[]
     defaultScope: string
     fallbackRemoteModuleLocation: string
 }
+
 
 const configureRemoteModules = <T,>(config: RemoteModuleConfig<T>) => {
     const remoteModuleConfig = config.remoteModules;
@@ -43,7 +45,7 @@ const RemoteModuleController = <T,>(props: RemoteModuleControllerProps<T>) => {
         const scope = remoteModule.scope;
         const showModule = remoteModule.enabled;
         remoteModules.push(
-            <div style={showModule ? { display: 'block' } : { display: 'none' }}>
+            <div key={remoteModule.name} style={showModule ? { display: 'block' } : { display: 'none' }}>
                 <RemoteModuleFetch
                     remoteModuleLocation={remoteModule.url ?? fallbackRemoteModuleLocation}
                     appScope={scope ?? defaultScope
@@ -64,17 +66,17 @@ const RemoteModuleController = <T,>(props: RemoteModuleControllerProps<T>) => {
 export const DragAndDrop = <T,>(props: DragAndDropProps) => {
     const testConfig = require('../configuration/tesConfig.json')
 
-    const configContext = useContext(ConfigurationContext);
-    const config = configContext.configuration as RemoteModuleConfig<T>;
+
+    const configContext = useConfigurationContext()
 
     const { childComponentSlot, className } = props;
 
     const [selectedComponent, setSelectedComponent] = useState<JSX.Element | null | JSX.Element[]>(null)
 
     useEffect(() => {
-        const remoteModules = configureRemoteModules(config);
+        const remoteModules = configureRemoteModules(configContext.configuration);
         setSelectedComponent(remoteModules[childComponentSlot]);
-    }, [config, childComponentSlot])
+    }, [configContext, childComponentSlot])
 
     return (
         <div className={`${className} drop-target`} onDrop={dropHandler} onDragOver={dragoverHandler}>

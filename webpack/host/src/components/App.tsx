@@ -1,10 +1,11 @@
-import { Suspense, useContext, useState, useEffect } from 'react';
+import { Suspense, useState, useEffect } from 'react';
 import { DragAndDrop } from './DragAndDrop'
-import { ConfigurationContext } from './contexts/ConfigurationContext'
+import { useConfigurationContext } from '../hooks'
 import '../styles/App.css';
 
+
 function App() {
-  const configContext = useContext(ConfigurationContext);
+  const configContext = useConfigurationContext()
   const mapping = configContext.configuration.mapping;
 
   const [{ header, sidebar, footer }, setMapping] = useState(mapping);
@@ -26,6 +27,7 @@ function App() {
           childComponentSlot={header}
           className='header-container' />
       </Suspense>
+
       <div className='main-content'>
         <Suspense fallback="Loading Sidebar">
           <DragAndDrop
@@ -37,6 +39,7 @@ function App() {
           <p>This is the main content of the page.</p>
         </main>
       </div>
+
       <Suspense fallback="Loading Footer">
         <DragAndDrop
           childComponentSlot={footer}
